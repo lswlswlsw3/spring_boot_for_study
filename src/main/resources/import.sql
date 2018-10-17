@@ -1,2 +1,2 @@
-INSERT INTO USER(ID, EMAIL, NAME, USER_ID, USER_PASSWORD) VALUES (1, 'aa@aa', 'woongs', 'woongs', 'woongs');
-INSERT INTO USER(ID, EMAIL, NAME, USER_ID, USER_PASSWORD) VALUES (2, 'bb@bb', 'woongs2', 'woongs2', 'woongs2');
+INSERT INTO USER(EMAIL, NAME, USER_ID, USER_PASSWORD) VALUES ('aa@aa', 'woongs', 'woongs', 'woongs');
+INSERT INTO USER(EMAIL, NAME, USER_ID, USER_PASSWORD) VALUES ('bb@bb', 'woongs2', 'woongs2', 'woongs2');

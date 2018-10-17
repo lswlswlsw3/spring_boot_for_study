@@ -1,12 +1,21 @@
 package com.woong;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import com.woong.domain.QuestionRepository;
 
 @Controller
 public class HomeController {
-	@GetMapping
-	public String home() {
+	
+	@Autowired
+	private QuestionRepository QuestionRepository;
+	
+	@GetMapping("")
+	public String home(Model model) {
+		model.addAttribute("questions", QuestionRepository.findAll());
 		System.out.println("home is called!");
 		return "index";
 	}

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.woong.domain.User;
 import com.woong.domain.UserRepository;
+import com.woong.web.HttpSessionUtils;
 
 @Controller
 @RequestMapping("/users")
@@ -40,20 +41,20 @@ public class UserController {
 			return "redirect:/users/loginForm";
 		}
 		
-		if(!userPassword.equals(user.getUserPassword())) {
+		if(!user.matchPassword(userPassword)) {
 			System.out.println("Login Fail");
 			return "redirect:/users/loginForm";
 		}
 		
 		System.out.println("Login sucess");
-		session.setAttribute("sessionedUser", user);
+		session.setAttribute(HttpSessionUtils.USER_SESSION_KEY, user);
 		
 		return "redirect:/";
 	}
 	
 	@GetMapping("/logout")
 	public String logout(HttpSession session) {
-		session.removeAttribute("sessionedUser");
+		session.removeAttribute(HttpSessionUtils.USER_SESSION_KEY);
 		return "redirect:/";
 	}
 	
@@ -80,14 +81,13 @@ public class UserController {
 	public String updateForm(@PathVariable Long id, Model model, HttpSession session) {
 		System.out.println("/{id}/form : "+id);
 		
-		Object tempUser = session.getAttribute("sessionedUser");
-		if(tempUser == null) {
+		if(HttpSessionUtils.isLoginUser(session)) {
 			return "redirect:/users/loginForm";
 		}
 		
-		User sessionedUser = (User) tempUser;
+		User sessionedUser = HttpSessionUtils.getUserFromSession(session);
 				
-		if(id.equals(sessionedUser.getId())) {
+		if(!sessionedUser.matchId(id)) {
 			throw new IllegalStateException("자신의 정보만 수정할수 있습니다.");
 		}
 				
